@@ -92,13 +92,12 @@ def convert_png_to_canvas(canvas_path):
         canvas = set_image_gamma(canvas, ENCODING_GAMMA)
 
     """
+    Todo: readd asserts from the valid canvas sizes
     Clothing = 256 x 256
     Facepaint = 256 x 256
     Food = 256 x 256
-
     """
-    assert canvas.size == (
-        HEIGHT_OF_IMAGE, WIDTH_OF_IMAGE), "Canvas must be 256 x 256 in dimensions"
+    
 
     canvas = canvas.convert(IMAGE_MODE).tobytes('raw')
     save_canvas(canvas, canvas_path)
