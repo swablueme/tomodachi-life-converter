@@ -39,13 +39,16 @@ def get_icc_profile(image):
     return prf
 
 
-def is_srgb_image(image):
-    prf = get_icc_profile(image)
-    if prf is None:
-        return False
-    elif "srgb" in prf.profile.profile_description.lower():
-        return True
-    return False
+def is_srgb_image(imagePath):
+    with open(imagePath, 'rb') as file:
+        val = False
+        data = file.read()
+        if data.find(b"sRGB") != -1:
+            print(f"Image is in {SRGB_PROFILE}")
+            val = True
+        data = None
+        file.close()
+        return val
 
 
 def check_if_path_exists(savepath: Path):
@@ -88,7 +91,7 @@ def convert_canvas_to_png(canvas_path):
 
 def convert_png_to_canvas(canvas_path):
     canvas = Image.open(Path.cwd() / canvas_path)
-    if not is_srgb_image(canvas):
+    if not is_srgb_image(canvas_path):
         canvas = set_image_gamma(canvas, ENCODING_GAMMA)
 
     """
