@@ -162,9 +162,9 @@ if __name__ == "__main__":
         for path in files:
             if os.path.exists(os.path.abspath(path)):
                 print(f"Found file: {path}")
-                if path.endswith(("canvas.zs", ".canvas")):
+                if path.endswith("canvas.zs"):
                     convert_canvas_to_png(Path.cwd() / path)
-                elif path.endswith(("ugctex.zs", ".ugctex")):
+                elif path.endswith("ugctex.zs"):
                     convert_ugctex_to_png(Path.cwd() / path)
                 elif path.endswith(".png"):
                     convert_png(Path.cwd() / path)
