@@ -20,8 +20,8 @@ Simply drag and drop a png onto this script to convert a png into a .canvas.zs o
 
 def save_canvas(img: Image, imagepath: Path):
     save_canvas_path = imagepath.with_name(f"{imagepath.stem}.canvas.zs")
-    canvas_swizzled_data = nsw_swizzle(img, (HEIGHT_OF_IMAGE, WIDTH_OF_IMAGE),
-                                       UNCOMPRESSED_BLOCK_SIZE, BYTES_PER_BLOCK_SWITCH, SWITCH_SWIZZLE_MODE)
+    canvas_swizzled_data = nsw_swizzle(img, (HEIGHT_OF_IMAGE_CANVAS, WIDTH_OF_IMAGE_CANVAS),
+                                       UNCOMPRESSED_BLOCK_SIZE_CANVAS, BYTES_PER_BLOCK_SWITCH_CANVAS, SWITCH_SWIZZLE_MODE)
     check_if_path_exists(save_canvas_path)
     canvas_swizzled_data = zstd.compress(canvas_swizzled_data)
     with open(save_canvas_path, 'wb') as f:
@@ -34,11 +34,11 @@ def convert_canvas_to_png(canvas_path):
         if canvas_path.name.endswith(".zs"):
             rawdata = zstd.decompress(rawdata)
 
-        swizzled = nsw_deswizzle(rawdata, (HEIGHT_OF_IMAGE, WIDTH_OF_IMAGE),
-                                 UNCOMPRESSED_BLOCK_SIZE, BYTES_PER_BLOCK_SWITCH, SWITCH_SWIZZLE_MODE)
+        swizzled = nsw_deswizzle(rawdata, (HEIGHT_OF_IMAGE_CANVAS, WIDTH_OF_IMAGE_CANVAS),
+                                 UNCOMPRESSED_BLOCK_SIZE_CANVAS, BYTES_PER_BLOCK_SWITCH_CANVAS, SWITCH_SWIZZLE_MODE)
 
         img = Image.frombytes(
-            IMAGE_MODE, (HEIGHT_OF_IMAGE, WIDTH_OF_IMAGE), swizzled, 'raw', IMAGE_MODE)
+            IMAGE_MODE, (HEIGHT_OF_IMAGE_CANVAS, WIDTH_OF_IMAGE_CANVAS), swizzled, 'raw', IMAGE_MODE)
 
         save_file(img, canvas_path)
 

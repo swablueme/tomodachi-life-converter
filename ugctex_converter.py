@@ -19,8 +19,8 @@ def save_ugctex(img: Image, imagepath: Path):
     img.save(dds_bytes, format='DDS', pixel_format='DXT1')
 
     save_ugctex_path = imagepath.with_name(f"{imagepath.stem}.ugctex.zs")
-    ugctex_swizzled_data = nsw_swizzle(dds_bytes.getvalue()[128:], (UGC_HEIGHT, UGC_WIDTH),
-                                       UGC_BLOCK_SIZE, UGC_BPBS, SWITCH_SWIZZLE_MODE)
+    ugctex_swizzled_data = nsw_swizzle(dds_bytes.getvalue()[128:], (HEIGHT_OF_IMAGE_TEXTURE, WIDTH_OF_IMAGE_TEXTURE),
+                                       UNCOMPRESSED_BLOCK_SIZE_TEXTURE, BYTES_PER_BLOCK_SWITCH_TEXTURE, SWITCH_SWIZZLE_MODE)
     check_if_path_exists(save_ugctex_path)
     ugctex_swizzled_data = zstd.compress(ugctex_swizzled_data)
     with open(save_ugctex_path, 'wb') as f:
@@ -33,8 +33,8 @@ def convert_ugctex_to_png(ugctext_path):
         if ugctext_path.name.endswith(".zs"):
             rawdata = zstd.decompress(rawdata)
 
-        swizzled = nsw_deswizzle(rawdata, (UGC_HEIGHT, UGC_WIDTH),
-                                 UGC_BLOCK_SIZE, UGC_BPBS, SWITCH_SWIZZLE_MODE)
+        swizzled = nsw_deswizzle(rawdata, (HEIGHT_OF_IMAGE_TEXTURE, WIDTH_OF_IMAGE_TEXTURE),
+                                 UNCOMPRESSED_BLOCK_SIZE_TEXTURE, BYTES_PER_BLOCK_SWITCH_TEXTURE, SWITCH_SWIZZLE_MODE)
 
         img = Image.open(io.BytesIO(DDS_HEADER + swizzled))
 

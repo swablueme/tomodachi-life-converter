@@ -2,3 +2,4 @@
 *.png
 *.clip
 *.psd
+__pycache__
